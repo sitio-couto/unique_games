@@ -1,0 +1,225 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{fancyvrb}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{xspace}
+\usepackage{xifthen}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[portuguese,onelanguage,linesnumbered,noline,noend]{algorithm2e}
+
+% load times font
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n} % uses default mathcal font
+
+% estilo
+\sloppy
+\geometry{left=2.5cm,right=2cm,top=2cm,bottom=2.5cm}
+
+\DeclareTextFontCommand{\emph}{\em\color{coralerta}}
+\newcommand{\alert}[1]{{\color{coralerta}#1}}
+
+% cores
+\colorlet{coralerta}{red!60}
+\colorlet{cordefs}{blue!70}
+
+% algoritmos
+\newcommand{\textonormal}[1]{#1}
+\SetFuncArgSty{textonormal}
+\SetProgSty{textonormal}
+\SetArgSty{textonormal}
+
+\DontPrintSemicolon
+\makeatletter
+\newcommand{\Algoritmo}[1]{{\color{coralerta}
+    \algocf@seteveryparnl{\relax}
+    \hspace*{-2ex}#1:\;
+}}
+\makeatother
+
+\newcommand{\mysty}[1]{\textbf{\color{black!50}\relsize{-2} #1}}
+\SetNlSty{mysty}{}{}
+
+% seções
+\titleformat*{\section}{\normalfont\sffamily\large\bfseries\color{cordefs}}
+\titleformat*{\subsection}{\bfseries\sffamily\color{cordefs}}
+\titleformat*{\subsubsection}{\itshape\subsubsectionfont\color{cordefs}}
+\titleformat{\paragraph}{\normalfont\color{cordefs}\bfseries}{}{1em}{}
+
+% teoremas
+\mdfdefinestyle{mdteostyle}{
+  outerlinewidth = 1pt,
+  roundcorner =2pt,
+  leftmargin = 0,
+  rightmargin = 0,
+  backgroundcolor = yellow!10,
+  outerlinecolor=blue!10!black,
+  innertopmargin = \topskip,
+  splittopskip = \topskip,
+  ntheorem = true,
+  nobreak
+}
+\newtheoremstyle{coloredthm}
+  {0pt}% Space above
+  {0pt}% Space below
+  {\itshape}% Body font
+  {}% Indent amount
+  {\bfseries\color{cordefs}}% Theorem head font
+  {.}% Punctuation after theorem head
+  {.5em}% Space after theorem head
+  {}% Theorem head spec (can be left empty, meaning ‘normal’)
+
+\newtheoremstyle{coloredthmnonum}
+  {0pt}% Space above
+  {0pt}% Space below
+  {\itshape}% Body font
+  {}% Indent amount
+  {\bfseries\color{cordefs}}% Theorem head font
+  {.}% Punctuation after theorem head
+  {.5em}% Space after theorem head
+  {\thmname{#1}\thmnote{ (#3)}}% Theorem head spec (can be left empty, meaning ‘normal’)
+
+\newtheoremstyle{coloredprob}
+  {0pt}% Space above
+  {0pt}% Space below
+  {}% Body font
+  {}% Indent amount
+  {\bfseries\color{cordefs}}% Theorem head font
+  {}% Punctuation after theorem head
+  {\newline}% Space after theorem head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{: {\color{coralerta}#3}}}% Theorem head spec (can be left empty, meaning ‘normal’)
+
+\theoremstyle{coloredthm}
+\newmdtheoremenv[style=mdteostyle]{teorema}{Teorema}
+\newmdtheoremenv[style=mdteostyle]{corolario}{Corolário}
+\newmdtheoremenv[style=mdteostyle]{fato}{Fato}
+\newmdtheoremenv[style=mdteostyle]{lema}{Lema}
+\newmdtheoremenv[style=mdteostyle]{afirmacao}{Afirmação}
+\newmdtheoremenv[style=mdteostyle]{conjectura}{Conjectura}
+
+\theoremstyle{coloredthmnonum}
+\newmdtheoremenv[style=mdteostyle]{definicao}{Definição}
+
+\theoremstyle{coloredprob}
+\newmdtheoremenv[style=mdteostyle]{auxproblema}{Problema}
+
+% corrige problema com espaçamento quando teorema e prova começa com lista
+\newenvironment{problema}[1][]
+  {\begin{auxproblema}[#1]\leavevmode\vspace{-\baselineskip}}
+  {\end{auxproblema}}
+
+\renewenvironment{proof}[1][Demonstração]{%
+  \def\endqedsymbol{\hfill~\qedsymbol}%
+  \renewcommand{\qedhere}{\endqedsymbol\gdef\endqedsymbol{\relax}}%
+  \noindent\textit{\color{cordefs}#1.}~}{\endqedsymbol}
+
+% nova lista de questões
+\newlist{questions}{enumerate}{2}
+\setlist[questions,1]{label={\textbf{Questão \arabic*.}},ref=\arabic*,leftmargin=0pt,align=left,itemindent=*}
+\setlist[questions,2]{label={\textbf{\textit{(\alph*)}}},itemsep=0pt}
+\newlist{cequestions}{enumerate}{1}
+\setlist[cequestions]{label={\textbf{\textit{(\alph*)}}\makebox[0pt][l]{\quad C\quad E \quad}},itemsep=0pt,labelsep=1.7cm,leftmargin=!}
+
+% uso: \resposta[texto]{tamanho}
+\newcommand{\resposta}[2][Resposta:]{%
+  \par\noindent\ifthenelse{\isempty{#1}}{}{{\small #1\\}}%
+  \framebox[\linewidth][l]{\rule{0cm}{#2}}\vspace{1pt}}
+
+\newcommand{\videverso}{\vfill\par\hfill{\emph{\footnotesize(vide verso)}}\clearpage}
+
+\newcommand{\Cabecalho}[1]{
+  \thispagestyle{empty}
+  \begin{center}\small
+    Instituto de Computação -- UNICAMP\\
+    Algoritmos de Aproximação\\
+    \url{http://www.ic.unicamp.br/~lehilton/mo418a/}\\[10pt]
+    {\Large\sffamily\color{cordefs} #1}
+\end{center}}
+
+\newcommand{\AutoresData}[2]{{\sf\noindent{\color{cordefs}\textbf{Escrito por:}} #1}\hfill{\sf{\color{cordefs}\textbf{Data:}} #2}}
+
+% \CabecalhoLista{nome da lista}{url random}
+\newcommand{\ItensInstrucoes}[1][]{
+
+  \raggedright
+
+  \item Os exercícios devem ser submetidos em formato PDF dentro do prazo
+    indicado na página \url{https://www.ic.unicamp.br/~lehilton/mo418a/submit/}.\\
+    Utilizem a mesma senha passada em sala para as notas de aula.
+
+  \item Os exercícios devem \emph{escritos à mão} e escaneados. Se for
+    fotografar, utilize um aplicativo que corrija a perspectiva. Certifique-se
+    de que o documento está legível. Faça um rascunho e passe a limpo.
+
+  \ifx\relax#1\relax\else
+
+  \item Só serão aceitas listas com todas questões respondidas, mas serão
+    corrigidos \textbf{apenas} os itens sorteados em \url{#1}.
+
+  \fi
+}
+
+% listas
+\setlist[itemize,1]{label=$\rightarrow$}
+\setlist[itemize,2]{label=--}
+\setlist[description]{leftmargin=!,labelwidth=1.8cm}
+
+% configura listing e corrige leitura de centos
+\lstset{
+  showstringspaces=false,
+  basicstyle=\ttfamily,
+  inputencoding=utf8,
+  extendedchars=true,
+  literate={á}{{\'a}}1
+    {ã}{{\~a}}1
+    {â}{{\^a}}1
+    {é}{{\'e}}1
+    {ê}{{\^e}}1
+    {í}{{\'i}}1
+    {ó}{{\'o}}1
+    {õ}{{\~o}}1
+    {ô}{{\^o}}1
+    {ú}{{\'u}}1
+    {ç}{{\c c}}1
+    {vé}{{v\'e}}2,
+}
+
+% % USE:
+% %      Teclas     Caractere
+% %      AlgGr-Z    «
+% %      AltGr-X    »
+% %      AltGr-4    £
+% \begin{Verbatim}[frame=single,commandchars=£«»]
+% // exemplo de código
+% int misterio(int a, int b) {
+%     if (a < b)
+%         return 0;
+%     else
+%         £textbf«ASD» + misterio(a - b, b);
+% }
+% \end{Verbatim}
+
+% macros de algoritmos
+\newcommand{\ptas}{\ensuremath{\mathrm{PTAS}}\xspace}
+\newcommand{\pp}{\ensuremath{\mathrm{P}}\xspace}
+\newcommand{\np}{\ensuremath{\mathrm{NP}}\xspace}
+\newcommand{\maxsnp}{\ensuremath{\mathrm{MAXSNP}}\xspace}
+
+\newcommand{\val}{\text{val}\xspace}
+\newcommand{\opt}{\text{opt}\xspace}
+\newcommand{\agm}{\text{agm}\xspace}
